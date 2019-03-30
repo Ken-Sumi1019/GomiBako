@@ -1,0 +1,10 @@
+th{
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    padding: 0px;
+}
+
+.table_border{
+    border: 1px solid;
+}
