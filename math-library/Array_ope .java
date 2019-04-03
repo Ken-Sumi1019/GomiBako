@@ -7,19 +7,6 @@ import java.util.Map;
 
 public class Array_ope {
 	
-	//行列の要素を全てdoubleにする。
-	public static double[][] 2Dconv_elem(double a[][]){
-	    int len = a.length;
-	    int len_i = a[0].length;
-	    double ans[][] = new double[len][len_i];
-	    for (int i = 0;i < len;i++){
-	        for (int j = 0;j < len_i;i ++){
-	            ans[i][j] = a[i][j];
-	        }
-	    }
-	    return ans;
-	}
-	
 	//単位行列を生成する。（引数は行数）
 	public static double[][] eye(int n){
 	    double ans[][] = new double[n][n];
