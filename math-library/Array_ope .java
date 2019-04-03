@@ -6,19 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Array_ope {
-	public static void main(String[] args) {
-		double num[][] = new double[3][3];
-		Scanner scanner = new Scanner(System.in);
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				String e = scanner.next();
-				num[i][j] = Double.parseDouble(e);
-			}
-		}
-		double ll[][] = Matrix_compute.matrixinv(num);
-		System.out.println(Arrays.deepToString(ll));
-		scanner.close();
-	}
 	
 	//行列の要素を全てdoubleにする。
 	public static double[][] 2Dconv_elem(double a[][]){
