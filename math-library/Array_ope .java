@@ -26,14 +26,14 @@ public class Array_ope {
 	        for (int j = 0;j < a[0].length;j ++){
 	            ans[i][j] = a[i][j];
 	        }
-	        for (int j = 0;j < b[0].length;b++){
+	        for (int j = 0;j < b[0].length;j++){
 	            ans[i][j] = b[i][j];
 	        }
 	    }
 	    return ans;
 	}
 	//行列を縦向きに連結する
-	public static double[][] con_port(double a[][],b[][]){
+	public static double[][] con_port(double a[][],double b[][]){
 	    if (a[0].length != b[0].length){
 	        throw new IllegalArgumentException("列の数が違います");
 	    }
@@ -70,7 +70,7 @@ public class Array_ope {
 	public static double Ave_vec(double a[]){
 	    double ans = 0;
 	    double count = 0;
-	    for (int i = 0;i < a.length){
+	    for (int i = 0;i < a.length;i++){
 	        count ++;
 	        ans += a[i];
 	    }
@@ -84,20 +84,20 @@ public class Array_ope {
 	}
 	//一次元配列の最頻値
 	public static double Mode_vec(double a[]){
-	    Map<double, int> map = new HashMap<double,int>();
+	    Map<String, String> map = new HashMap<String,String>();
 	    for (int i = 0;i < a.length;i ++){
-	        if map.containsKey(a[i]){
-	            int num = map.get(a[i]);
-	            map.put(a[i],num);
+	        if (map.containsKey(String.valueOf(a[i]))){
+	            int num = Integer.valueOf(map.get(String.valueOf(a[i])));
+	            map.put(String.valueOf(a[i]),Integer.toString(num+1));
 	        }else{
-	            map.put(a[i],1);
+	            map.put(String.valueOf(a[i]),Integer.toString(1));
 	        }
 	    }
 	    double ans = 0;int check = 0;
-	    for (double key:map.keyset()){
-	        if check < map.get(key){
-	            ans = key;
-	            check = map.get(key);
+	    for (String key:map.keySet()){
+	        if (check < Integer.parseInt(map.get(key))){
+	            ans = Double.valueOf(key);
+	            check = Integer.parseInt(map.get(key));
 	        }
 	    }
 	    return ans;
@@ -106,7 +106,7 @@ public class Array_ope {
 	public static double variance(double a[]){
 	    double ave = Array_ope.Ave_vec(a);
 	    double ans = 0;
-	    for (int i = 0;i < a.length;a++){
+	    for (int i = 0;i < a.length;i++){
 	        ans += Math.pow((a[i]-ave),2);
 	    }
 	    ans = (double) ans / a.length;
@@ -117,7 +117,7 @@ public class Array_ope {
 	    double ave = Array_ope.Ave_vec(a);
 	    double vari = Array_ope.variance(a);
 	    double ans[] = new double[a.length];
-	    for (int i = 0;i < a.length;a++){
+	    for (int i = 0;i < a.length;i++){
 	        ans[i] = (double) (a[i]-ave) / vari;
 	    }
 	    return ans;
@@ -126,32 +126,32 @@ public class Array_ope {
 	public static double[] normalize_vec(double a[]){
 	    double max = Array_ope.Max_vec(a);
 	    double min = Array_ope.Min_vec(a);
-	    double ans[] = new double[];
+	    double ans[] = new double[a.length];
 	    for (int i = 0;i < a.length;i++){
 	        ans[i] = (double) (a[i] - min) / (max - min);
 	    }
 	    return ans;
 	}
 	//列での欠損値補完（第二引数は1は平均値2は中央値3は最頻値4は列の最大値
-	//5は列の最小値で補完）欠損値には予めnullを代入しておいて
+	//5は列の最小値で補完）欠損値には予めNaNを代入しておいて
 	//[1,3,4,2]みたいにその列ごとに補完したい代表値を示す番号を格納した配列を
 	//引数に渡す。
 	public static double[][] Completion(double a[][],int type[]){
 	    if (a[0].length != type.length){
 	        throw new IllegalArgumentException("行列の列の数とtypeの次元数が一致してません。");
 	    }
-	    double count[] = new double[a[0].length];
+	    int count[] = new int[a[0].length];
 	    for (int i = 0;i < a.length;i++){
 	        for (int j = 0;j < a[0].length;j++){
-	            if (a[i][j] == null)count[j]++;
+	            if (Double.isNaN(a[i][j]))count[j]++;
 	        }
 	    }
-	    double elem[] = new double[type.length;
-	    for (int i = 0;i < check.length;i ++){
+	    double elem[] = new double[type.length];
+	    for (int i = 0;i < type.length;i ++){
 	        double check[] = new double[a.length - count[i]];
 	        int c = 0;
 	        for (int j = 0;j < a[0].length;j ++){
-	            if (a[i][j] != null){
+	            if (! Double.isNaN(a[i][j])){
 	                check[c] = a[i][j];
 	                c++;
 	            }
@@ -166,7 +166,7 @@ public class Array_ope {
 	    }
 	    for (int i = 0;i < a.length;i++){
 	        for (int j = 0;j < a[0].length;j++){
-	            if (a[i][j] == null){
+	            if (Double.isNaN(a[i][j])){
 	                a[i][j] = elem[j];
 	            }
 	        }
