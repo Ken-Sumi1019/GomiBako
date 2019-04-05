@@ -1,0 +1,43 @@
+<html>
+    <head></head>
+    <body>
+        <script>
+            past = 0;
+            now = 0;
+            start_time = 0;
+            time_log = '0s';
+            function start(){
+                var d1 = document.getElementById('timelog');
+                d1.insertAdjacentHTML('afterend','<p>start timer</p>');
+                //ラップタイムの前の時間
+                now = past;
+                past = Date.now();
+                start_time = past;
+                //ラップタイムの後の時間
+                now = Date.now();
+            }
+            //時間を計測する関数
+            function count_time(){
+                now = Date.now();
+                var d1 = document.getElementById('timelog');
+                d1.insertAdjacentHTML('afterend','<p>' + String((now-past)/1000) + 's</p>');
+                time_log += ',' + String((now-past)/1000) + 's';
+                past = now;
+            }
+            function stop(){
+                now = Date.now();
+                var d1 = document.getElementById('timelog');
+                d1.insertAdjacentHTML('afterend','<p>time log:' + time_log + '</p>');
+                d1.insertAdjacentHTML('afterend','<p>Total time:' + String((now-start_time)/1000) + 's</p>');
+            }
+            function finish(){
+                location.reload();
+            }
+        </script>
+        <input type="button" onclick="start()" value="start">
+        <input type="button" onclick="count_time()" value="laptime">
+        <input type="button" onclick="stop()" value="stop">
+        <input type="button" onclick="finish()" value="finish">
+        <div id='timelog'>time log</div>
+    </body>
+</html>
