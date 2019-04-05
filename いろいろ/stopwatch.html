@@ -9,12 +9,14 @@
             function start(){
                 var d1 = document.getElementById('timelog');
                 d1.insertAdjacentHTML('afterend','<p>start timer</p>');
+                timer_func = setInterval('showtime()',1); 
                 //ラップタイムの前の時間
                 now = past;
                 past = Date.now();
                 start_time = past;
                 //ラップタイムの後の時間
                 now = Date.now();
+                document.getElementById("startcount").disabled = true;
             }
             //時間を計測する関数
             function count_time(){
@@ -29,15 +31,21 @@
                 var d1 = document.getElementById('timelog');
                 d1.insertAdjacentHTML('afterend','<p>time log:' + time_log + '</p>');
                 d1.insertAdjacentHTML('afterend','<p>Total time:' + String((now-start_time)/1000) + 's</p>');
+                clearInterval( timer_func ); 
             }
             function finish(){
                 location.reload();
             }
+            function showtime(){
+                var this_time = (Date.now() - start_time)/1000;
+                document.getElementById("timearia").innerHTML = this_time + 's'; 
+            }
         </script>
-        <input type="button" onclick="start()" value="start">
+        <input type="button" onclick="start()" value="start" id='startcount'>
         <input type="button" onclick="count_time()" value="laptime">
         <input type="button" onclick="stop()" value="stop">
         <input type="button" onclick="finish()" value="finish">
+        <h2 id='timearia'>スタートを押してからの時間</h2>
         <div id='timelog'>time log</div>
     </body>
 </html>
