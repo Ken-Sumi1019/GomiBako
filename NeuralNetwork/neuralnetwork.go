@@ -22,30 +22,6 @@ func makeMatrix(i int,j int) [][]float64{
 	}
 	return ans
 }
-//ベクトルの最大値を求める
-func vecMax(x [][]float64) float64{
-	if len(x[0]) != 1 && len(x) != 1{
-		println("ふええ～おにいちゃーん、これベクトルじゃないよぉ～～")
-		os.Exit(1)
-	}
-	ans := 0.0
-	for i:=0;i<len(x);i++{
-		for j:=0;j<len(x[0]);j++{
-			ans = max(ans,x[i][j])
-		}
-	}
-	return ans
-}
-//ベクトルのexpの合計
-func vecExp(x [][]float64) float64{
-	ans := 0.0
-	for i:=0;i<len(x);i++{
-		for j:=0;j<len(x[0]);j++{
-			ans = math.Exp(x[i][j])
-		}
-	}
-	return ans
-}
 //行列を合計
 func add(a [][]float64,b [][]float64) [][]float64{
 	if (len(a) != len(b)) || (len(a[0]) != len(b[0])){
@@ -154,49 +130,7 @@ func vecMul(mat [][]float64) [][]float64{
 	}
 	return ans
 }
-//行列に行列を追加（横方向）
-/*
-func addMat(a [][]float64,b [][]float64) [][]float64{
-	if len(a) != len(b){
-		println("ふええ～おにいちゃーん、行数が違うからつなげれないよ～～")
-		os.Exit(1)
-	}
-	ans := makeMatrix(len(a),len(a[0]) + len(b[0]))
-	for i:=0;i<len(a);i++{
-		for j:=0;j<len(a[0]);j++{
-			ans[i][j] = a[i][j]
-		}
-		for j:=0;j<len(b[0]);j++{
-			ans[i][len(a[0]) + j] = b[i][j]
-		}
-	}
-	return ans
-}
- */
-//relu
-func relu(a [][]float64) [][]float64{
-	ans := makeMatrix(len(a),len(a[0]))
-	for i:=0;i<len(a);i++{
-		for j:=0;j<len(a[0]);j++{
-			ans[i][j] = max(0,a[i][j])
-		}
-	}
-	return ans
-}
-//reluの微分
-func diffRelu(a [][]float64) [][]float64{
-	ans := makeMatrix(len(a),len(a[0]))
-	for i:=0;i<len(a);i++{
-		for j:=0;j<len(a[0]);j++{
-			if a[i][j] > 0{
-				ans[i][j] = 1
-			} else {
-				ans[i][j] = 0
-			}
-		}
-	}
-	return ans
-}
+
 //シグモイド関数
 func sigmoid(x [][]float64) [][]float64{
 	ans := makeMatrix(len(x),len(x[0]))
@@ -233,16 +167,7 @@ func softmax(x [][]float64) [][]float64{
 	}
 	return ans
 }
-//クロスエントロピー誤差
-func crossEntropy(y [][]float64,t [][]float64) float64{
-	n := 0.0
-	for i:=0;i<len(y);i++{
-		for j:=0;j<len(y[0]);j++{
-			n += t[i][j] * math.Log(y[i][j])// + (1 - t[i][j]) * math.Log(1 - y[i][j])
-		}
-	}
-	return -n/float64(len(y))
-}
+
 //二乗誤差
 func 	square(y [][]float64,t [][]float64) float64 {
 	n := 0.0
@@ -309,24 +234,10 @@ func back(x [][]float64,y [][]float64){
 	dw2 = multi(trans(layer_a1),output_delta)
 	db2 = vecMul(output_delta)
 
-	/*
-	delayer2 := add(y,constMult(-1,layer_a2))
-	dw2 = multi(trans(layer_a1),delayer2)
-	db2 = vecMul(delayer2)
-	*/
 	//入力層-中間層の重みでの微分を求める
-	//fmt.Println(layer_z1)
-	//fmt.Println(w1_1)
-	//fmt.Println(delayer2)
 	mid_delta := adaMul(multi(output_delta,trans(w1_1)),diffSigmoid(layer_a1))
 	dw1 = multi(trans(x),mid_delta)
 	db1 = vecMul(mid_delta)
-	/*
-	fmt.Println("dw2",dw2)
-	fmt.Println("db2",db2)
-	fmt.Println("dw1",dw1)
-	fmt.Println("db1",db1)
-	 */
 }
 
 //重みの更新
@@ -353,22 +264,13 @@ func main(){
 	x := [][]float64{{1,1},{0,0},{0,1},{1,0}}
 	y := [][]float64{{1,0},{1,0},{0,1},{0,1}}
 	train(x,y,0.1,10000)
-	//mat := multi(trans(x),y)
-	fmt.Println(costList)
 	fmt.Println(forward(x))
-	//fmt.Println("----------------")
-	//x = [][]float64{{0.9,0.1},{0.9,0.1},{0.1,0.9},{0.1,0.9}}
-	//y = [][]float64{{1,0},{1,0},{0,1},{0,1}}
-	//fmt.Println(relu(y))
-  //コストの情報
+
 	file, _ := os.Create(`C:\\pythontest\\grade.txt`)
-	
 	defer file.Close()
 
 	for i:=0;i<len(costList);i++{
 		output := []byte(strconv.FormatFloat(costList[i], 'f', 15, 64) + " ")
 		file.Write(([]byte)(output))
 	}
-
-
 }
