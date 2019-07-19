@@ -95,7 +95,7 @@ var list = make([][]block,4)
 
 //初期化
 func initList(){
-	for i:=0;i<5;i++{
+	for i:=0;i<4;i++{
 		list[i] = []block{makeBlock([32]byte{},0,256,"")}
 	}
 }
