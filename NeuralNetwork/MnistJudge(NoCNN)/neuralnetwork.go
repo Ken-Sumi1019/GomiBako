@@ -145,7 +145,7 @@ func main(){
 	la := getmnist.GetTestLabel()
 	fmt.Println(accuracy(output,la))
 
-	file, _ := os.Create(`C:\\pythontest\\grade.txt`)
+	file, _ := os.Create(`C:\\hoge\\grade.txt`)
 	defer file.Close()
 
 	for i:=0;i<len(costList);i++{
